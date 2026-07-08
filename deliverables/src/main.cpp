@@ -28,6 +28,7 @@ void printMenu() {
     std::cout << "  3. Add New Medical Service" << std::endl;
     std::cout << "  4. Schedule Appointment for Patient" << std::endl;
     std::cout << "  5. Set Appointment Status / Bill Modifier" << std::endl;
+    std::cout << "  6. View All Users" << std::endl;
     std::cout << "  7. View Medical Services Catalog" << std::endl;
     std::cout << "  8. View Patient Medical Expenses" << std::endl;
     std::cout << "  9. View System Statistics (Static Counts)" << std::endl;
@@ -155,11 +156,13 @@ int main() {
             } else if (choice == "5") {
                 handleSetAppointmentStatus(system);
             } else if (choice == "6") {
+                system.viewAllUsers();
             } else if (choice == "7") {
                 system.viewServicesCatalog();
             } else if (choice == "8") {
                 handleViewPatientExpenses(system);
             } else if (choice == "9") {
+                system.viewSystemStats();
             } else if (choice == "s" || choice == "S") {
                 system.saveAllData();
             } else if (choice == "0") {
