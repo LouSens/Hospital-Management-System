@@ -138,7 +138,7 @@ void HospitalSystem::viewPatientExpenses(const std::string& patientId) const {
 
 void HospitalSystem::viewSystemStats() const {
     std::cout << "\n" << std::string(55, '-') << std::endl;
-    std::cout << "           SYSTEM STATISTICS" << std::endl;
+    std::cout << "           SYSTEM DASHBOARD" << std::endl;
     std::cout << std::string(55, '-') << std::endl;
     std::cout << "  Total registered users : " << Person::getTotalCount()    << std::endl;
     std::cout << "  Total patients         : " << Patient::getPatientCount() << std::endl;

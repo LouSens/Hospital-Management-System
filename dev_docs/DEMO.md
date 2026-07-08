@@ -12,7 +12,7 @@ Upon starting, the application will display the welcome message and the main men
 
 ```text
   Welcome to the Hospital Patient & Appointment
-  Management System (HPAMS) — CST209
+  Management System (HPAMS)
 
 =======================================================
        HOSPITAL MANAGEMENT SYSTEM MENU
@@ -21,11 +21,11 @@ Upon starting, the application will display the welcome message and the main men
   2. Add New Doctor
   3. Add New Medical Service
   4. Schedule Appointment for Patient
-  5. Set Appointment Status / Bill Modifier
-  6. View All Users
+  5. Update Appointment & Process Billing
+  6. View All Personnel and Patients
   7. View Medical Services Catalog
   8. View Patient Medical Expenses
-  9. View System Statistics (Static Counts)
+  9. View System Dashboard
   S. Save All Data to Files
   0. Exit System
 -------------------------------------------------------
@@ -103,13 +103,13 @@ We will test standard, emergency, and cancelled billing modifiers.
 
 #### **Step F: View Output Information (Options 6, 7, 8, 9)**
 These options prove the system dynamically processes data:
-- Type `6` to **View All Users** (Will cleanly list Alice, Bob, Dr. Smith, and Dr. Adams using Polymorphism).
+- Type `6` to **View All Personnel and Patients** (Will cleanly list Alice, Bob, Dr. Smith, and Dr. Adams using Polymorphism).
 - Type `7` to **View Medical Services Catalog** (Will list Blood Test and MRI Scan).
 - Type `8` to **View Patient Medical Expenses** for Alice.
   - `Enter Patient ID :` `P001` (Calculates bill for Completed Blood Test + Cancelled MRI).
 - Type `8` again for Bob.
   - `Enter Patient ID :` `P002` (Calculates bill for the Emergency MRI with a 1.5x multiplier).
-- Type `9` to **View System Statistics** (Proves the static counters accurately read 2 Patients, 2 Doctors, 4 Users).
+- Type `9` to **View System Dashboard** (Proves the static counters accurately read 2 Patients, 2 Doctors, 4 Users).
 
 #### **Step G: Verify Persistence (Options S and 0)**
 1. Type `S` to test manual data serialization (Proves `patients.txt`, `doctors.txt`, and `appointments.txt` populate).

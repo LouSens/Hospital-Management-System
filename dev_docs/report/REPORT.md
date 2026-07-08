@@ -36,7 +36,7 @@ Upon initialization, the system presents the primary navigation menu. Registerin
 
 ```text
   Welcome to the Hospital Patient & Appointment
-  Management System (HPAMS) — CST209
+  Management System (HPAMS)
 
 =======================================================
        HOSPITAL MANAGEMENT SYSTEM MENU
@@ -97,11 +97,11 @@ Appointments are instantiated via object composition, linking a patient to a med
 
   Enter choice: 5
 
---- Update Appointment Status ---
+--- Update Appointment ---
   Enter Patient ID    : P001
   Enter Service Code  : SVC001
-  New Status          : Completed
-  Billing Modifier    : Insured
+  Status [Scheduled/Completed/Cancelled/Emergency] : Completed
+  Billing [Standard/Insured/Emergency]             : Insured
 [SUCCESS] Appointment updated.
 ```
 
@@ -948,7 +948,7 @@ void HospitalSystem::viewPatientExpenses(const std::string& patientId) const {
 
 void HospitalSystem::viewSystemStats() const {
     std::cout << "\n" << std::string(55, '-') << std::endl;
-    std::cout << "           SYSTEM STATISTICS" << std::endl;
+    std::cout << "           SYSTEM DASHBOARD" << std::endl;
     std::cout << std::string(55, '-') << std::endl;
     std::cout << "  Total registered users : " << Person::getTotalCount()    << std::endl;
     std::cout << "  Total patients         : " << Patient::getPatientCount() << std::endl;
@@ -1172,11 +1172,11 @@ void printMenu() {
     std::cout << "  2. Add New Doctor" << std::endl;
     std::cout << "  3. Add New Medical Service" << std::endl;
     std::cout << "  4. Schedule Appointment for Patient" << std::endl;
-    std::cout << "  5. Set Appointment Status / Bill Modifier" << std::endl;
-    std::cout << "  6. View All Users" << std::endl;
+    std::cout << "  5. Update Appointment & Process Billing" << std::endl;
+    std::cout << "  6. View All Personnel and Patients" << std::endl;
     std::cout << "  7. View Medical Services Catalog" << std::endl;
     std::cout << "  8. View Patient Medical Expenses" << std::endl;
-    std::cout << "  9. View System Statistics (Static Counts)" << std::endl;
+    std::cout << "  9. View System Dashboard" << std::endl;
     std::cout << "  S. Save All Data to Files" << std::endl;
     std::cout << "  0. Exit System" << std::endl;
     std::cout << std::string(55, '-') << std::endl;
@@ -1251,15 +1251,11 @@ void handleScheduleAppointment(HospitalSystem& sys) {
 
 void handleSetAppointmentStatus(HospitalSystem& sys) {
     std::string patientId, serviceCode, status, modifier;
-    std::cout << "\n--- Set Appointment Status ---" << std::endl;
+    std::cout << "\n--- Update Appointment ---" << std::endl;
     std::cout << "  Enter Patient ID    : "; std::getline(std::cin, patientId);
     std::cout << "  Enter Service Code  : "; std::getline(std::cin, serviceCode);
-    std::cout << "  New Status          : " << std::endl;
-    std::cout << "    [Scheduled / Completed / Cancelled / Emergency]" << std::endl;
-    std::cout << "  > "; std::getline(std::cin, status);
-    std::cout << "  Billing Modifier    : " << std::endl;
-    std::cout << "    [Standard / Insured / Emergency]" << std::endl;
-    std::cout << "  > "; std::getline(std::cin, modifier);
+    std::cout << "  Status [Scheduled/Completed/Cancelled/Emergency] : "; std::getline(std::cin, status);
+    std::cout << "  Billing [Standard/Insured/Emergency]             : "; std::getline(std::cin, modifier);
     if (modifier.empty()) modifier = "Standard";
     sys.setAppointmentStatus(patientId, serviceCode, status, modifier);
 }
@@ -1283,7 +1279,7 @@ int main() {
     bool running = true;
 
     std::cout << "\n  Welcome to the Hospital Patient & Appointment" << std::endl;
-    std::cout << "  Management System (HPAMS) — CST209" << std::endl;
+    std::cout << "  Management System (HPAMS)" << std::endl;
 
     while (running) {
         printMenu();
