@@ -38,4 +38,7 @@ public:
 
     // Pure virtual role type identifier
     virtual std::string getRoleType() const = 0;
+
+    // Virtual serialisation
+    virtual std::string toFileString() const = 0;
 };

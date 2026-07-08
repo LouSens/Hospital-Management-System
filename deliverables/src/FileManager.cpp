@@ -23,22 +23,28 @@ void FileManager::saveServices(const std::vector<MedicalService>& services,
 }
 
 void FileManager::saveUsers(const std::vector<Person*>& users,
-                             const std::string& pFile,
-                             const std::string& dFile) {
-    std::ofstream pOut(pFile), dOut(dFile);
-    if (!pOut.is_open()) throw std::ios_base::failure("Cannot open: " + pFile);
-    if (!dOut.is_open()) throw std::ios_base::failure("Cannot open: " + dFile);
+                             const std::string& userFile,
+                             const std::string& appointFile) {
+    std::ofstream uFile(userFile);
+    std::ofstream aFile(appointFile);
+
+    if (!uFile.is_open()) throw std::ios_base::failure("Cannot open: " + userFile);
+    if (!aFile.is_open()) throw std::ios_base::failure("Cannot open: " + appointFile);
 
     for (const Person* p : users) {
+        // Polymorphic write via getRoleType()
+        uFile << p->toFileString() << "\n";
+
         if (p->getRoleType() == "Patient") {
             const Patient* pat = dynamic_cast<const Patient*>(p);
-            if (pat) pOut << pat->toFileString() << "\n";
-        } else if (p->getRoleType() == "Doctor") {
-            const Doctor* doc = dynamic_cast<const Doctor*>(p);
-            if (doc) dOut << doc->toFileString() << "\n";
+            if (pat) {
+                for (const auto& appt : pat->getAppointments()) {
+                    aFile << p->getId() << "|" << appt.toFileString() << "\n";
+                }
+            }
         }
     }
-    std::cout << "[FILE] Users saved." << std::endl;
+    std::cout << "[FILE] Users and Appointments saved." << std::endl;
 }
 
 std::vector<MedicalService> FileManager::loadServices(const std::string& filename) {

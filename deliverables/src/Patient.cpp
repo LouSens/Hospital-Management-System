@@ -75,6 +75,10 @@ double Patient::calculateTotalMedicalExpenses() const {
 
 int Patient::getPatientCount() { return patientCount; }
 
+void Patient::addAppointmentRecord(const AppointmentRecord& record) {
+    appointments.push_back(record);
+}
+
 std::string Patient::toFileString() const {
-    return id + "|" + name + "|" + insuranceProvider;
+    return "Patient|" + id + "|" + name + "|" + insuranceProvider;
 }

@@ -42,5 +42,5 @@ void Doctor::assignToClinic(const std::string& code) {
 int Doctor::getDoctorCount() { return doctorCount; }
 
 std::string Doctor::toFileString() const {
-    return id + "|" + name + "|" + specializationDepartment + "|" + assignedClinicCode;
+    return "Doctor|" + id + "|" + name + "|" + specializationDepartment + "|" + assignedClinicCode;
 }

@@ -49,6 +49,9 @@ public:
     // Static
     static int getPatientCount();
 
+    // Direct record injection (for file loader)
+    void addAppointmentRecord(const AppointmentRecord& record);
+
     // File serialisation
     std::string toFileString() const;
 };
