@@ -157,10 +157,47 @@ The Hospital Patient and Appointment Management System successfully satisfies it
 ## Appendix: Complete Source Code
 
 
+### `Makefile`
+
+```makefile
+# Makefile
+# Hospital Patient & Appointment Management System
+# CST209 -- Object-Oriented Programming C++
+
+CXX      = g++
+CXXFLAGS = -std=c++17 -Wall -Wextra -I./include
+
+SRCS = src/Person.cpp \
+       src/MedicalService.cpp \
+       src/AppointmentRecord.cpp \
+       src/Patient.cpp \
+       src/Doctor.cpp \
+       src/FileManager.cpp \
+       src/HospitalSystem.cpp \
+       src/main.cpp
+
+TARGET = hospital_system
+
+# Default rule: build the executable
+$(TARGET): $(SRCS)
+	$(CXX) $(CXXFLAGS) $(SRCS) -o $(TARGET)
+
+# Create data directory if it doesn't exist, then build
+setup:
+	mkdir -p data
+	$(MAKE) $(TARGET)
+
+# Remove compiled binary
+clean:
+	rm -f $(TARGET)
+
+.PHONY: clean setup
+
+```
 
 ### `include/AppointmentRecord.h`
 
-```cpp
+```h
 #pragma once
 #include "MedicalService.h"
 #include <string>
@@ -213,7 +250,7 @@ public:
 
 ### `include/Doctor.h`
 
-```cpp
+```h
 #pragma once
 #include "Person.h"
 #include <string>
@@ -261,7 +298,7 @@ public:
 
 ### `include/FileManager.h`
 
-```cpp
+```h
 #pragma once
 #include <vector>
 #include <string>
@@ -281,15 +318,15 @@ public:
     static void saveServices(const std::vector<MedicalService>& services,
                              const std::string& filename = "data/services.txt");
     static void saveUsers(const std::vector<Person*>& users,
-                          const std::string& pFile = "data/patients.txt",
-                          const std::string& dFile = "data/doctors.txt");
+                          const std::string& userFile = "data/users.txt",
+                          const std::string& appointFile = "data/appointments.txt");
 
     // Load operations
     static std::vector<MedicalService> loadServices(
         const std::string& filename = "data/services.txt");
     static void loadUsers(std::vector<Person*>& users,
-                          const std::string& pFile = "data/patients.txt",
-                          const std::string& dFile = "data/doctors.txt");
+                          const std::string& userFile = "data/users.txt",
+                          const std::string& appointFile = "data/appointments.txt");
 
     // Utility
     static bool fileExists(const std::string& filename);
@@ -299,7 +336,7 @@ public:
 
 ### `include/HospitalSystem.h`
 
-```cpp
+```h
 #pragma once
 #include "Patient.h"
 #include "Doctor.h"
@@ -351,6 +388,7 @@ public:
                               const std::string& modifier);
 
     // Display operations
+    void viewAllUsers() const;
     void viewServicesCatalog() const;
     void viewPatientExpenses(const std::string& patientId) const;
     void viewSystemStats() const;      // Uses static counts
@@ -364,7 +402,7 @@ public:
 
 ### `include/MedicalService.h`
 
-```cpp
+```h
 #pragma once
 #include <string>
 #include <iostream>
@@ -410,7 +448,7 @@ public:
 
 ### `include/Patient.h`
 
-```cpp
+```h
 #pragma once
 #include "Person.h"
 #include "AppointmentRecord.h"
@@ -462,6 +500,9 @@ public:
     // Static
     static int getPatientCount();
 
+    // Direct record injection (for file loader)
+    void addAppointmentRecord(const AppointmentRecord& record);
+
     // File serialisation
     std::string toFileString() const;
 };
@@ -470,7 +511,7 @@ public:
 
 ### `include/Person.h`
 
-```cpp
+```h
 #pragma once
 #include <string>
 #include <iostream>
@@ -511,6 +552,9 @@ public:
 
     // Pure virtual role type identifier
     virtual std::string getRoleType() const = 0;
+
+    // Virtual serialisation
+    virtual std::string toFileString() const = 0;
 };
 
 ```
@@ -635,7 +679,7 @@ void Doctor::assignToClinic(const std::string& code) {
 int Doctor::getDoctorCount() { return doctorCount; }
 
 std::string Doctor::toFileString() const {
-    return id + "|" + name + "|" + specializationDepartment + "|" + assignedClinicCode;
+    return "Doctor|" + id + "|" + name + "|" + specializationDepartment + "|" + assignedClinicCode;
 }
 
 ```
@@ -668,22 +712,28 @@ void FileManager::saveServices(const std::vector<MedicalService>& services,
 }
 
 void FileManager::saveUsers(const std::vector<Person*>& users,
-                             const std::string& pFile,
-                             const std::string& dFile) {
-    std::ofstream pOut(pFile), dOut(dFile);
-    if (!pOut.is_open()) throw std::ios_base::failure("Cannot open: " + pFile);
-    if (!dOut.is_open()) throw std::ios_base::failure("Cannot open: " + dFile);
+                             const std::string& userFile,
+                             const std::string& appointFile) {
+    std::ofstream uFile(userFile);
+    std::ofstream aFile(appointFile);
+
+    if (!uFile.is_open()) throw std::ios_base::failure("Cannot open: " + userFile);
+    if (!aFile.is_open()) throw std::ios_base::failure("Cannot open: " + appointFile);
 
     for (const Person* p : users) {
+        // Polymorphic write via getRoleType()
+        uFile << p->toFileString() << "\n";
+
         if (p->getRoleType() == "Patient") {
             const Patient* pat = dynamic_cast<const Patient*>(p);
-            if (pat) pOut << pat->toFileString() << "\n";
-        } else if (p->getRoleType() == "Doctor") {
-            const Doctor* doc = dynamic_cast<const Doctor*>(p);
-            if (doc) dOut << doc->toFileString() << "\n";
+            if (pat) {
+                for (const auto& appt : pat->getAppointments()) {
+                    aFile << p->getId() << "|" << appt.toFileString() << "\n";
+                }
+            }
         }
     }
-    std::cout << "[FILE] Users saved." << std::endl;
+    std::cout << "[FILE] Users and Appointments saved." << std::endl;
 }
 
 std::vector<MedicalService> FileManager::loadServices(const std::string& filename) {
@@ -770,7 +820,7 @@ HospitalSystem::HospitalSystem() {
 
 HospitalSystem::~HospitalSystem() {
     for (Person* p : users) {
-        p = nullptr;
+        delete p;
     }
     users.clear();
 }
@@ -860,6 +910,7 @@ void HospitalSystem::viewAllUsers() const {
     std::cout << "           ALL REGISTERED USERS" << std::endl;
     std::cout << std::string(55, '=') << std::endl;
     for (const Person* p : users) {
+        p->displayRole();
     }
     std::cout << std::string(55, '=') << std::endl;
     std::cout << "  Total Users : " << Person::getTotalCount()    << std::endl;
@@ -1054,8 +1105,12 @@ double Patient::calculateTotalMedicalExpenses() const {
 
 int Patient::getPatientCount() { return patientCount; }
 
+void Patient::addAppointmentRecord(const AppointmentRecord& record) {
+    appointments.push_back(record);
+}
+
 std::string Patient::toFileString() const {
-    return id + "|" + name + "|" + insuranceProvider;
+    return "Patient|" + id + "|" + name + "|" + insuranceProvider;
 }
 
 ```
@@ -1118,6 +1173,7 @@ void printMenu() {
     std::cout << "  3. Add New Medical Service" << std::endl;
     std::cout << "  4. Schedule Appointment for Patient" << std::endl;
     std::cout << "  5. Set Appointment Status / Bill Modifier" << std::endl;
+    std::cout << "  6. View All Users" << std::endl;
     std::cout << "  7. View Medical Services Catalog" << std::endl;
     std::cout << "  8. View Patient Medical Expenses" << std::endl;
     std::cout << "  9. View System Statistics (Static Counts)" << std::endl;
@@ -1245,11 +1301,13 @@ int main() {
             } else if (choice == "5") {
                 handleSetAppointmentStatus(system);
             } else if (choice == "6") {
+                system.viewAllUsers();
             } else if (choice == "7") {
                 system.viewServicesCatalog();
             } else if (choice == "8") {
                 handleViewPatientExpenses(system);
             } else if (choice == "9") {
+                system.viewSystemStats();
             } else if (choice == "s" || choice == "S") {
                 system.saveAllData();
             } else if (choice == "0") {
@@ -1275,5 +1333,3 @@ int main() {
 }
 
 ```
-
-

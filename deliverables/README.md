@@ -93,7 +93,7 @@ classDiagram
         +getId(): string
         +getName(): string
         +displayRole()* void
-        +serialize()* string
+        +toFileString()* string
     }
 
     class Patient {
@@ -101,7 +101,10 @@ classDiagram
         +Patient(id, name, insurance)
         +getInsuranceProvider(): string
         +displayRole() void
-        +serialize() string
+        +toFileString() string
+        +scheduleAppointment(service)
+        +addAppointmentRecord(record)
+        +calculateTotalMedicalExpenses(): double
     }
 
     class Doctor {
@@ -111,7 +114,7 @@ classDiagram
         +getSpecialisation(): string
         +getClinicCode(): string
         +displayRole() void
-        +serialize() string
+        +toFileString() string
     }
 
     Person <|-- Patient
@@ -126,7 +129,7 @@ classDiagram
         +getServiceCode(): string
         +getServiceName(): string
         +getBaseFee(): double
-        +serialize(): string
+        +toFileString(): string
     }
 
     class AppointmentRecord {
@@ -138,7 +141,7 @@ classDiagram
         +getPatientId(): string
         +getStatus(): string
         +calculateFinalFee(): double
-        +serialize(): string
+        +toFileString(): string
     }
 
     AppointmentRecord *-- MedicalService : composition
@@ -146,7 +149,6 @@ classDiagram
     class HospitalSystem {
         -users: vector~Person*~
         -services: vector~MedicalService~
-        -appointments: vector~AppointmentRecord~
         +addPatient(...)
         +addDoctor(...)
         +addMedicalService(...)
@@ -155,14 +157,10 @@ classDiagram
     }
 
     class FileManager {
-        +loadPatients(...)
-        +savePatients(...)
-        +loadDoctors(...)
-        +saveDoctors(...)
+        +loadUsers(...)
+        +saveUsers(...)
         +loadServices(...)
         +saveServices(...)
-        +loadAppointments(...)
-        +saveAppointments(...)
     }
 
     HospitalSystem --> Person : manages (polymorphism)
