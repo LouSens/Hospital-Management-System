@@ -72,41 +72,75 @@ std::vector<MedicalService> FileManager::loadServices(const std::string& filenam
 }
 
 void FileManager::loadUsers(std::vector<Person*>& users,
-                             const std::string& pFile,
-                             const std::string& dFile) {
-    // Load Patients
-    if (fileExists(pFile)) {
-        std::ifstream pIn(pFile);
+                             const std::string& userFile,
+                             const std::string& appointFile) {
+    // Load Users (Patients & Doctors)
+    if (fileExists(userFile)) {
+        std::ifstream uIn(userFile);
         std::string line;
-        while (std::getline(pIn, line)) {
+        while (std::getline(uIn, line)) {
             // Skip empty lines and comment lines
             if (line.empty() || line[0] == '#') continue;
             std::stringstream ss(line);
-            std::string id, name, insurance;
-            if (std::getline(ss, id, '|') &&
-                std::getline(ss, name, '|') &&
-                std::getline(ss, insurance)) {
-                users.push_back(new Patient(id, name, insurance));
+            std::string role;
+            if (std::getline(ss, role, '|')) {
+                if (role == "Patient") {
+                    std::string id, name, insurance;
+                    if (std::getline(ss, id, '|') &&
+                        std::getline(ss, name, '|') &&
+                        std::getline(ss, insurance)) {
+                        users.push_back(new Patient(id, name, insurance));
+                    }
+                } else if (role == "Doctor") {
+                    std::string id, name, spec, clinic;
+                    if (std::getline(ss, id, '|') &&
+                        std::getline(ss, name, '|') &&
+                        std::getline(ss, spec, '|') &&
+                        std::getline(ss, clinic)) {
+                        users.push_back(new Doctor(id, name, spec, clinic));
+                    }
+                }
             }
         }
     }
-    // Load Doctors
-    if (fileExists(dFile)) {
-        std::ifstream dIn(dFile);
+
+    // Load Appointments
+    if (fileExists(appointFile)) {
+        std::ifstream aIn(appointFile);
         std::string line;
-        while (std::getline(dIn, line)) {
+        while (std::getline(aIn, line)) {
             // Skip empty lines and comment lines
             if (line.empty() || line[0] == '#') continue;
             std::stringstream ss(line);
-            std::string id, name, spec, clinic;
-            if (std::getline(ss, id, '|') &&
-                std::getline(ss, name, '|') &&
-                std::getline(ss, spec, '|') &&
-                std::getline(ss, clinic)) {
-                users.push_back(new Doctor(id, name, spec, clinic));
+            std::string patientId, svcCode, svcName, svcFeeStr, status, modifier;
+            if (std::getline(ss, patientId, '|') &&
+                std::getline(ss, svcCode, '|') &&
+                std::getline(ss, svcName, '|') &&
+                std::getline(ss, svcFeeStr, '|') &&
+                std::getline(ss, status, '|') &&
+                std::getline(ss, modifier)) {
+                
+                try {
+                    double fee = std::stod(svcFeeStr);
+                    MedicalService svc(svcCode, svcName, fee);
+                    AppointmentRecord record(svc, status, modifier);
+                    
+                    for (Person* p : users) {
+                        if (p->getId() == patientId && p->getRoleType() == "Patient") {
+                            Patient* pat = dynamic_cast<Patient*>(p);
+                            if (pat) {
+                                pat->addAppointmentRecord(record);
+                            }
+                            break;
+                        }
+                    }
+                } catch (...) {
+                    // Skip malformed appointment lines
+                }
             }
         }
     }
+
     // Only announce loaded data when there is actually something to report
     if (!users.empty()) {
         std::cout << "[FILE] Data loaded. Total users: "
