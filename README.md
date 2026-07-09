@@ -1,7 +1,20 @@
 # Hospital Patient & Appointment Management System (HPAMS)
-### CST209 — Object-Oriented Programming C++ | Xiamen University Malaysia 2026/04
 
-**GitHub Repository:** [https://github.com/LouSens/Hospital-Management-System](https://github.com/LouSens/Hospital-Management-System)
+[![C++](https://img.shields.io/badge/C++-17-blue.svg)](https://isocpp.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Architecture: OOP](https://img.shields.io/badge/Architecture-OOP-success.svg)](#)
+
+## 📖 Project Overview
+The **Hospital Patient and Appointment Management System (HPAMS)** is a robust, console-based enterprise application built entirely in **C++17**. It demonstrates advanced **Object-Oriented Programming (OOP)** paradigms and modern software engineering practices.
+
+Designed to eliminate administrative inefficiencies in healthcare workflows, HPAMS automates the tracking of patient records, dynamic billing, medical service directories, and cross-department scheduling.
+
+### 🛠️ Technology Stack & Core Competencies
+- **Language:** C++17
+- **Standard Library:** Heavy integration of STL (`std::vector`, `std::string`, `std::find_if`, `<algorithm>`, file streams)
+- **Architecture:** Object-Oriented Design (Abstract Base Classes, Polymorphism, Encapsulation, Composition)
+- **Error Handling:** Multi-tier custom exception propagation (`std::invalid_argument`, `std::runtime_error`)
+- **Memory Management:** RAII, safe pointer handling via `std::vector` containment, and dynamic dispatch cleanup via Virtual Destructors.
 
 ---
 
@@ -207,9 +220,6 @@ Hospital-Management-System/
 │   │   ├── services.txt
 │   │   └── appointments.txt
 │   └── Makefile
-├── docs/                     <- Documentation and Reports
-│   └── report/
-│       └── REPORT.md
 └── README.md
 ```
 
