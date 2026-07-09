@@ -12,14 +12,15 @@ class MedicalService {
 private:
     std::string serviceCode;
     std::string serviceName;
+    std::string requiredSpecialization;
     double baseFee;
 
 public:
     // Constructor 1: All parameters provided
-    MedicalService(const std::string& code, const std::string& name, double fee);
+    MedicalService(const std::string& code, const std::string& name, const std::string& spec, double fee);
 
     // Constructor 2: Default baseFee = 50.0 (overloaded constructor)
-    MedicalService(const std::string& code, const std::string& name);
+    MedicalService(const std::string& code, const std::string& name, const std::string& spec);
 
     // Default constructor for file loading
     MedicalService();
@@ -27,6 +28,7 @@ public:
     // Getters
     std::string getServiceCode() const;
     std::string getServiceName() const;
+    std::string getRequiredSpecialization() const;
     double getBaseFee() const;
 
     // Setters

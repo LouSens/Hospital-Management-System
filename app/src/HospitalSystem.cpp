@@ -24,6 +24,15 @@ Patient* HospitalSystem::findPatient(const std::string& id) {
     return nullptr;
 }
 
+Doctor* HospitalSystem::findDoctor(const std::string& id) const {
+    for (Person* p : users) {
+        if (p->getId() == id && p->getRoleType() == "Doctor") {
+            return dynamic_cast<Doctor*>(p);
+        }
+    }
+    return nullptr;
+}
+
 const MedicalService* HospitalSystem::findService(const std::string& code) const {
     for (const auto& svc : services) {
         if (svc.getServiceCode() == code) return &svc;
@@ -66,14 +75,18 @@ void HospitalSystem::addMedicalService(const MedicalService& service) {
 }
 
 void HospitalSystem::scheduleAppointment(const std::string& patientId,
+                                         const std::string& doctorId,
                                          const std::string& serviceCode) {
     Patient* pat = findPatient(patientId);
     if (!pat) throw std::runtime_error("Patient ID not found: " + patientId);
 
+    Doctor* doc = findDoctor(doctorId);
+    if (!doc) throw std::runtime_error("Doctor ID not found: " + doctorId);
+
     const MedicalService* svc = findService(serviceCode);
     if (!svc) throw std::runtime_error("Service code not found: " + serviceCode);
 
-    pat->scheduleAppointment(*svc);
+    pat->scheduleAppointment(*svc, doc->getId(), doc->getName());
 }
 
 void HospitalSystem::setAppointmentStatus(const std::string& patientId,
@@ -104,6 +117,35 @@ void HospitalSystem::listPatients() const {
     std::cout << "  --------------------------" << std::endl;
 }
 
+void HospitalSystem::listDoctors() const {
+    std::cout << "  --- Available Doctors ---" << std::endl;
+    bool found = false;
+    for (const Person* p : users) {
+        if (p->getRoleType() == "Doctor") {
+            std::cout << "  - ID: " << p->getId() << " | Name: " << p->getName() << std::endl;
+            found = true;
+        }
+    }
+    if (!found) std::cout << "  (No doctors available)" << std::endl;
+    std::cout << "  --------------------------" << std::endl;
+}
+
+void HospitalSystem::listDoctorsForSpecialization(const std::string& spec) const {
+    std::cout << "  --- Available Doctors for " << spec << " ---" << std::endl;
+    bool found = false;
+    for (const Person* p : users) {
+        if (p->getRoleType() == "Doctor") {
+            const Doctor* doc = dynamic_cast<const Doctor*>(p);
+            if (doc && (doc->getSpecialization() == spec || spec == "General" || spec == "")) {
+                std::cout << "  - ID: " << p->getId() << " | Name: " << p->getName() << " | Spec: " << doc->getSpecialization() << std::endl;
+                found = true;
+            }
+        }
+    }
+    if (!found) std::cout << "  (No doctors available for this specialization)" << std::endl;
+    std::cout << "  --------------------------" << std::endl;
+}
+
 void HospitalSystem::viewAllUsers() const {
     if (users.empty()) {
         std::cout << "  [INFO] No users registered." << std::endl;
@@ -122,15 +164,15 @@ void HospitalSystem::viewAllUsers() const {
 }
 
 void HospitalSystem::viewServicesCatalog() const {
-    std::cout << "\n" << std::string(55, '=') << std::endl;
-    std::cout << "           MEDICAL SERVICES CATALOG" << std::endl;
-    std::cout << std::string(55, '=') << std::endl;
+    std::cout << "\n" << std::string(105, '=') << std::endl;
+    std::cout << std::string(40, ' ') << "MEDICAL SERVICES CATALOG" << std::endl;
+    std::cout << std::string(105, '=') << std::endl;
     if (services.empty()) {
         std::cout << "  [INFO] No services available." << std::endl;
         return;
     }
     for (const auto& svc : services) svc.displayService();
-    std::cout << std::string(55, '=') << std::endl;
+    std::cout << std::string(105, '=') << std::endl;
 }
 
 void HospitalSystem::viewPatientExpenses(const std::string& patientId) const {

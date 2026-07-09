@@ -71,10 +71,11 @@ void handleAddDoctor(HospitalSystem& sys) {
 }
 
 void handleAddService(HospitalSystem& sys) {
-    std::string code, name, feeStr;
+    std::string code, name, spec, feeStr;
     std::cout << "\n--- Add New Medical Service ---" << std::endl;
     std::cout << "  Enter Service Code  (e.g. SVC001) : "; std::getline(std::cin, code);
     std::cout << "  Enter Service Name               : "; std::getline(std::cin, name);
+    std::cout << "  Req. Specialization (e.g. General): "; std::getline(std::cin, spec);
     std::cout << "  Enter Base Fee in RM (leave blank for RM 50.00 default): ";
     std::getline(std::cin, feeStr);
 
@@ -82,13 +83,13 @@ void handleAddService(HospitalSystem& sys) {
         throw std::invalid_argument("Service Code and Name cannot be empty.");
 
     if (feeStr.empty()) {
-        MedicalService svc(code, name);
+        MedicalService svc(code, name, spec.empty() ? "General" : spec);
         std::cout << "  [INFO] Using default fee: RM 50.00" << std::endl;
         sys.addMedicalService(svc);
     } else {
         try {
             double fee = std::stod(feeStr);
-            MedicalService svc(code, name, fee);
+            MedicalService svc(code, name, spec.empty() ? "General" : spec, fee);
             sys.addMedicalService(svc);
         } catch (const std::invalid_argument&) {
             throw std::invalid_argument("Fee must be a valid number (e.g. 120.50).");
@@ -97,24 +98,44 @@ void handleAddService(HospitalSystem& sys) {
 }
 
 void handleScheduleAppointment(HospitalSystem& sys) {
-    std::string patientId, serviceCode;
+    std::string patientId, doctorId, serviceCode;
     std::cout << "\n--- Schedule Appointment ---" << std::endl;
+    
+    std::cout << "\n--- Select Patient ---" << std::endl;
     sys.listPatients();
     std::cout << "  Enter Patient ID     : "; std::getline(std::cin, patientId);
+    
+    std::cout << "\n--- Select Medical Service ---" << std::endl;
     sys.viewServicesCatalog();
     std::cout << "  Enter Service Code   : "; std::getline(std::cin, serviceCode);
-    sys.scheduleAppointment(patientId, serviceCode);
+    
+    // Dynamically retrieve the service to find its required specialization
+    const MedicalService* svc = sys.findService(serviceCode);
+    if (!svc) throw std::runtime_error("Service code not found.");
+    
+    std::cout << "\n--- Select Doctor for " << svc->getRequiredSpecialization() << " ---" << std::endl;
+    sys.listDoctorsForSpecialization(svc->getRequiredSpecialization());
+    std::cout << "  Enter Doctor ID      : "; std::getline(std::cin, doctorId);
+    
+    sys.scheduleAppointment(patientId, doctorId, serviceCode);
 }
 
 void handleSetAppointmentStatus(HospitalSystem& sys) {
     std::string patientId, serviceCode, status, modifier;
     std::cout << "\n--- Update Appointment ---" << std::endl;
+    
+    std::cout << "\n--- Select Patient ---" << std::endl;
     sys.listPatients();
     std::cout << "  Enter Patient ID    : "; std::getline(std::cin, patientId);
+    
+    std::cout << "\n--- Select Medical Service to Update ---" << std::endl;
     sys.viewServicesCatalog();
     std::cout << "  Enter Service Code  : "; std::getline(std::cin, serviceCode);
+    
+    std::cout << "\n--- Enter New Status and Billing Details ---" << std::endl;
     std::cout << "  Status [Scheduled/Completed/Cancelled/Emergency] : "; std::getline(std::cin, status);
     std::cout << "  Billing [Standard/Insured/Emergency]             : "; std::getline(std::cin, modifier);
+    
     if (modifier.empty()) modifier = "Standard";
     sys.setAppointmentStatus(patientId, serviceCode, status, modifier);
 }

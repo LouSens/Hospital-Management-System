@@ -2,6 +2,7 @@
 **Course:** CST209 — Object-Oriented Programming C++
 **Institution:** Xiamen University Malaysia
 **Academic Session:** 2026/04
+**GitHub Repository:** [https://github.com/LouSens/Hospital-Management-System](https://github.com/LouSens/Hospital-Management-System)
 
 ## Abstract
 This paper presents the design and implementation of the Hospital Patient and Appointment Management System (HPAMS), a console-based software solution developed in C++17. The system addresses the administrative inefficiencies inherent in manual hospital workflows by providing a digitized framework for managing patient records, doctor assignments, medical services, and appointment billing. Through the rigorous application of Object-Oriented Programming (OOP) paradigms—specifically encapsulation, inheritance, and polymorphism—the architecture ensures robust data integrity and system extensibility. Furthermore, the integration of the Standard Template Library (STL) facilitates dynamic memory management and efficient data retrieval.
@@ -31,8 +32,8 @@ Static member variables are implemented to manage state data that pertains to th
 ## 3. System Walkthrough and Demonstration
 To validate the system's functional requirements, a comprehensive demonstration was conducted. The following subsections detail the anticipated console outputs corresponding to each distinct operational phase.
 
-### 3.1 Initialization and Patient Registration
-Upon initialization, the system presents the primary navigation menu. Registering a new patient utilizes the fundamental class constructors.
+### 3.1 Main Menu Preview
+Upon initialization, the system presents the primary navigation menu.
 
 ```text
   Welcome to the Hospital Patient & Appointment
@@ -53,6 +54,12 @@ Upon initialization, the system presents the primary navigation menu. Registerin
   S. Save All Data to Files
   0. Exit System
 -------------------------------------------------------
+```
+
+### 3.2 Add New Patient (Choice 1)
+Registering new patients utilizing the fundamental class constructors.
+
+```text
   Enter choice: 1
 
 --- Add New Patient ---
@@ -60,10 +67,18 @@ Upon initialization, the system presents the primary navigation menu. Registerin
   Enter Patient Name  : John Doe
   Enter Insurance     : AIA Gold
 [SUCCESS] Patient P001 added.
+
+  Enter choice: 1
+
+--- Add New Patient ---
+  Enter Patient ID    : P002
+  Enter Patient Name  : Jane Smith
+  Enter Insurance     : Prudential
+[SUCCESS] Patient P002 added.
 ```
 
-### 3.2 Personnel and Service Cataloging
-The system permits the continuous addition of medical personnel and specialized services, validating user input dynamically.
+### 3.3 Add New Doctor (Choice 2)
+Adding new doctors to the system.
 
 ```text
   Enter choice: 2
@@ -75,95 +90,281 @@ The system permits the continuous addition of medical personnel and specialized 
   Enter Clinic Code       : C-101
 [SUCCESS] Doctor D001 added.
 
+  Enter choice: 2
+
+--- Add New Doctor ---
+  Enter Doctor ID         : D002
+  Enter Doctor Name       : Dr. Adams
+  Enter Specialisation    : Neurology
+  Enter Clinic Code       : C-102
+[SUCCESS] Doctor D002 added.
+```
+
+### 3.4 Add New Medical Service (Choice 3)
+Adding specialized services to the catalog.
+
+```text
   Enter choice: 3
 
 --- Add New Medical Service ---
   Enter Service Code  (e.g. SVC001) : SVC001
   Enter Service Name               : Blood Test
+  Req. Specialization (e.g. General): Cardiology
   Enter Base Fee in RM (leave blank for RM 50.00 default): 150.00
 [SUCCESS] Service SVC001 added.
+
+  Enter choice: 3
+
+--- Add New Medical Service ---
+  Enter Service Code  (e.g. SVC001) : SVC002
+  Enter Service Name               : MRI Scan
+  Req. Specialization (e.g. General): Neurology
+  Enter Base Fee in RM (leave blank for RM 50.00 default): 800.00
+[SUCCESS] Service SVC002 added.
 ```
 
-### 3.3 Appointment Scheduling and Billing State Transitions
-Appointments are instantiated via object composition, linking a patient to a medical service. The billing state can be mutated to reflect completion and apply appropriate financial modifiers.
+### 3.5 Schedule Appointment (Choice 4)
+Scheduling appointments for the patients.
 
 ```text
   Enter choice: 4
 
 --- Schedule Appointment ---
+
+--- Select Patient ---
   --- Available Patients ---
   - ID: P001 | Name: John Doe
+  - ID: P002 | Name: Jane Smith
   --------------------------
   Enter Patient ID     : P001
 
-=======================================================
-           MEDICAL SERVICES CATALOG
-=======================================================
-  Code: SVC001      | Name: Blood Test               | Base Fee: RM 150.00
-=======================================================
+--- Select Medical Service ---
+=========================================================================================================
+                                        MEDICAL SERVICES CATALOG
+=========================================================================================================
+  Code: SVC001      | Name: Blood Test               | Req. Spec: Cardiology     | Base Fee: RM 150.00
+  Code: SVC002      | Name: MRI Scan                 | Req. Spec: Neurology      | Base Fee: RM 800.00
+=========================================================================================================
   Enter Service Code   : SVC001
+
+--- Select Doctor for Cardiology ---
+  --- Available Doctors for Cardiology ---
+  - ID: D001 | Name: Dr. Smith | Spec: Cardiology
+  --------------------------
+  Enter Doctor ID      : D001
 [SUCCESS] Appointment scheduled for P001.
+
+  Enter choice: 4
+
+--- Schedule Appointment ---
+
+--- Select Patient ---
+  --- Available Patients ---
+  - ID: P001 | Name: John Doe
+  - ID: P002 | Name: Jane Smith
+  --------------------------
+  Enter Patient ID     : P001
+
+--- Select Medical Service ---
+=========================================================================================================
+                                        MEDICAL SERVICES CATALOG
+=========================================================================================================
+  Code: SVC001      | Name: Blood Test               | Req. Spec: Cardiology     | Base Fee: RM 150.00
+  Code: SVC002      | Name: MRI Scan                 | Req. Spec: Neurology      | Base Fee: RM 800.00
+=========================================================================================================
+  Enter Service Code   : SVC002
+
+--- Select Doctor for Neurology ---
+  --- Available Doctors for Neurology ---
+  - ID: D002 | Name: Dr. Adams | Spec: Neurology
+  --------------------------
+  Enter Doctor ID      : D002
+[SUCCESS] Appointment scheduled for P001.
+
+  Enter choice: 4
+
+--- Schedule Appointment ---
+
+--- Select Patient ---
+  --- Available Patients ---
+  - ID: P001 | Name: John Doe
+  - ID: P002 | Name: Jane Smith
+  --------------------------
+  Enter Patient ID     : P002
+
+--- Select Medical Service ---
+=========================================================================================================
+                                        MEDICAL SERVICES CATALOG
+=========================================================================================================
+  Code: SVC001      | Name: Blood Test               | Req. Spec: Cardiology     | Base Fee: RM 150.00
+  Code: SVC002      | Name: MRI Scan                 | Req. Spec: Neurology      | Base Fee: RM 800.00
+=========================================================================================================
+  Enter Service Code   : SVC001
+
+--- Select Doctor for Cardiology ---
+  --- Available Doctors for Cardiology ---
+  - ID: D001 | Name: Dr. Smith | Spec: Cardiology
+  --------------------------
+  Enter Doctor ID      : D001
+[SUCCESS] Appointment scheduled for P002.
+```
+
+### 3.6 Update Appointment Status (Choice 5)
+Modifying the billing state for the scheduled appointments.
+
+```text
+  Enter choice: 5
+
+--- Update Appointment ---
+
+--- Select Patient ---
+  --- Available Patients ---
+  - ID: P001 | Name: John Doe
+  - ID: P002 | Name: Jane Smith
+  --------------------------
+  Enter Patient ID    : P001
+
+--- Select Medical Service to Update ---
+=========================================================================================================
+                                        MEDICAL SERVICES CATALOG
+=========================================================================================================
+  Code: SVC001      | Name: Blood Test               | Req. Spec: Cardiology     | Base Fee: RM 150.00
+  Code: SVC002      | Name: MRI Scan                 | Req. Spec: Neurology      | Base Fee: RM 800.00
+=========================================================================================================
+  Enter Service Code  : SVC001
+
+--- Enter New Status and Billing Details ---
+  Status [Scheduled/Completed/Cancelled/Emergency] : Completed
+  Billing [Standard/Insured/Emergency]             : Insured
+[SUCCESS] Appointment updated.
 
   Enter choice: 5
 
 --- Update Appointment ---
+
+--- Select Patient ---
   --- Available Patients ---
   - ID: P001 | Name: John Doe
+  - ID: P002 | Name: Jane Smith
   --------------------------
   Enter Patient ID    : P001
 
-=======================================================
-           MEDICAL SERVICES CATALOG
-=======================================================
-  Code: SVC001      | Name: Blood Test               | Base Fee: RM 150.00
-=======================================================
+--- Select Medical Service to Update ---
+=========================================================================================================
+                                        MEDICAL SERVICES CATALOG
+=========================================================================================================
+  Code: SVC001      | Name: Blood Test               | Req. Spec: Cardiology     | Base Fee: RM 150.00
+  Code: SVC002      | Name: MRI Scan                 | Req. Spec: Neurology      | Base Fee: RM 800.00
+=========================================================================================================
+  Enter Service Code  : SVC002
+
+--- Enter New Status and Billing Details ---
+  Status [Scheduled/Completed/Cancelled/Emergency] : Emergency
+  Billing [Standard/Insured/Emergency]             : Emergency
+[SUCCESS] Appointment updated.
+
+  Enter choice: 5
+
+--- Update Appointment ---
+
+--- Select Patient ---
+  --- Available Patients ---
+  - ID: P001 | Name: John Doe
+  - ID: P002 | Name: Jane Smith
+  --------------------------
+  Enter Patient ID    : P002
+
+--- Select Medical Service to Update ---
+=========================================================================================================
+                                        MEDICAL SERVICES CATALOG
+=========================================================================================================
+  Code: SVC001      | Name: Blood Test               | Req. Spec: Cardiology     | Base Fee: RM 150.00
+  Code: SVC002      | Name: MRI Scan                 | Req. Spec: Neurology      | Base Fee: RM 800.00
+=========================================================================================================
   Enter Service Code  : SVC001
-  Status [Scheduled/Completed/Cancelled/Emergency] : Completed
-  Billing [Standard/Insured/Emergency]             : Insured
+
+--- Enter New Status and Billing Details ---
+  Status [Scheduled/Completed/Cancelled/Emergency] : Cancelled
+  Billing [Standard/Insured/Emergency]             : Standard
 [SUCCESS] Appointment updated.
 ```
 
-### 3.4 Polymorphic Data Retrieval and Statistical Reporting
-Retrieving user records demonstrates runtime polymorphism, successfully parsing the unified vector. System statistics leverage the static counters to report instantaneous metrics.
+### 3.7 View All Users (Choice 6)
+Retrieving user records demonstrates runtime polymorphism, successfully parsing the unified vector.
 
 ```text
   Enter choice: 6
 
 --- All Registered Users ---
-[Patient] ID: P001 | Name: John Doe | Insurance: AIA Gold | Appointments: 1
+[Patient] ID: P001 | Name: John Doe | Insurance: AIA Gold | Appointments: 2
+[Patient] ID: P002 | Name: Jane Smith | Insurance: Prudential | Appointments: 1
 [Doctor] ID: D001 | Name: Dr. Smith | Specialisation: Cardiology | Clinic: C-101
+[Doctor] ID: D002 | Name: Dr. Adams | Specialisation: Neurology | Clinic: C-102
+```
 
+### 3.8 View Medical Services Catalog (Choice 7)
+Displaying all available medical services.
+
+```text
   Enter choice: 7
 
---- Medical Services Catalog ---
-  Code: SVC001      | Name: Blood Test               | Fee: RM 150.00
+=========================================================================================================
+                                        MEDICAL SERVICES CATALOG
+=========================================================================================================
+  Code: SVC001      | Name: Blood Test               | Req. Spec: Cardiology     | Base Fee: RM 150.00
+  Code: SVC002      | Name: MRI Scan                 | Req. Spec: Neurology      | Base Fee: RM 800.00
+=========================================================================================================
+```
+
+### 3.9 View Patient Medical Expenses (Choice 8)
+Checking the medical expenses for two patients.
+
+```text
+  Enter choice: 8
+
+--- Patient Medical Expenses ---
+  --- Available Patients ---
+  - ID: P001 | Name: John Doe
+  - ID: P002 | Name: Jane Smith
+  --------------------------
+  Enter Patient ID : P001
+[Billing] Total Expenses for P001 (John Doe): RM 1320.00
 
   Enter choice: 8
 
 --- Patient Medical Expenses ---
   --- Available Patients ---
   - ID: P001 | Name: John Doe
+  - ID: P002 | Name: Jane Smith
   --------------------------
-  Enter Patient ID : P001
-[Billing] Total Expenses for P001 (John Doe): RM 120.00
+  Enter Patient ID : P002
+[Billing] Total Expenses for P002 (Jane Smith): RM 0.00
+```
 
+### 3.10 View System Statistics (Choice 9)
+System statistics leverage the static counters to report instantaneous metrics.
+
+```text
   Enter choice: 9
 
 --- System Statistics ---
-Total Users Registered: 2
-Total Patients        : 1
-Total Doctors         : 1
+Total Users Registered: 4
+Total Patients        : 2
+Total Doctors         : 2
 ```
 
-### 3.5 Memory Deallocation and System Termination
-Upon program exit, the destructor gracefully clears dynamic memory allocations to prevent memory leaks.
+### 3.11 Save Data and Exit System
+Saving the data to files and terminating the system gracefully.
 
 ```text
+  Enter choice: S
+[FILE] Users and Appointments saved.
+
   Enter choice: 0
-[INFO] Saving data...
-[SUCCESS] Data saved.
-[INFO] Freeing memory...
-Goodbye!
+[FILE] Users and Appointments saved.
+
+  [SYSTEM] All data saved. Goodbye!
+  Memory cleaned up by HospitalSystem destructor.
 ```
 
 ## 4. Conclusion

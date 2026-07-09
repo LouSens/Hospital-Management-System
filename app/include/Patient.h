@@ -38,7 +38,7 @@ public:
     const std::vector<AppointmentRecord>& getAppointments() const;
 
     // Appointment operations
-    void scheduleAppointment(const MedicalService& service);
+    void scheduleAppointment(const MedicalService& service, const std::string& doctorId = "None", const std::string& doctorName = "None");
     bool setAppointmentStatus(const std::string& serviceCode,
                               const std::string& status,
                               const std::string& modifier = "Standard");

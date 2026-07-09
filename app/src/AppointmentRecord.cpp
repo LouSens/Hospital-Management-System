@@ -4,9 +4,11 @@
 #include <stdexcept>
 
 AppointmentRecord::AppointmentRecord(const MedicalService& svc,
+                                     const std::string& doctorId,
+                                     const std::string& doctorName,
                                      const std::string& status,
                                      const std::string& modifier)
-    : service(svc), appointmentStatus(status), billingModifier(modifier) {}
+    : service(svc), assignedDoctorId(doctorId), assignedDoctorName(doctorName), appointmentStatus(status), billingModifier(modifier) {}
 
 std::string AppointmentRecord::getServiceCode() const {
     return service.getServiceCode();
@@ -14,6 +16,14 @@ std::string AppointmentRecord::getServiceCode() const {
 
 std::string AppointmentRecord::getServiceName() const {
     return service.getServiceName();
+}
+
+std::string AppointmentRecord::getDoctorId() const {
+    return assignedDoctorId;
+}
+
+std::string AppointmentRecord::getDoctorName() const {
+    return assignedDoctorName;
 }
 
 std::string AppointmentRecord::getAppointmentStatus() const {
@@ -56,6 +66,7 @@ void AppointmentRecord::displayAppointment() const {
     std::cout << "    [" << appointmentStatus << "] "
               << service.getServiceCode() << " -- "
               << service.getServiceName()
+              << " | Dr: " << assignedDoctorName << " (" << assignedDoctorId << ")"
               << " | Modifier: " << billingModifier
               << " | Bill: RM " << std::fixed
               << std::setprecision(2) << calculateBillingAmount()
@@ -63,5 +74,5 @@ void AppointmentRecord::displayAppointment() const {
 }
 
 std::string AppointmentRecord::toFileString() const {
-    return service.toFileString() + "|" + appointmentStatus + "|" + billingModifier;
+    return service.toFileString() + "|" + appointmentStatus + "|" + billingModifier + "|" + assignedDoctorId + "|" + assignedDoctorName;
 }

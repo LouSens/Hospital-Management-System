@@ -1,6 +1,8 @@
 # Hospital Patient & Appointment Management System (HPAMS)
 ### CST209 — Object-Oriented Programming C++ | Xiamen University Malaysia 2026/04
 
+**GitHub Repository:** [https://github.com/LouSens/Hospital-Management-System](https://github.com/LouSens/Hospital-Management-System)
+
 ---
 
 ## Build Instructions
@@ -123,21 +125,25 @@ classDiagram
     class MedicalService {
         -serviceCode: string
         -serviceName: string
+        -requiredSpecialization: string
         -baseFee: double
-        +MedicalService(code, name, fee)
-        +MedicalService(code, name)
+        +MedicalService(code, name, spec, fee)
+        +MedicalService(code, name, spec)
         +getServiceCode(): string
         +getServiceName(): string
+        +getRequiredSpecialization(): string
         +getBaseFee(): double
         +toFileString(): string
     }
 
     class AppointmentRecord {
         -patientId: string
+        -assignedDoctorId: string
+        -assignedDoctorName: string
         -service: MedicalService
         -status: string
         -billingModifier: string
-        +AppointmentRecord(patientId, service, status, modifier)
+        +AppointmentRecord(...)
         +getPatientId(): string
         +getStatus(): string
         +calculateFinalFee(): double

@@ -1,0 +1,4 @@
+Patient|P001|Alice Tan|AIA Gold
+Patient|P002|Bob Lee|Prudential
+Doctor|D001|Dr. Smith|Cardiology|C-101
+Doctor|D002|Dr. Adams|Neurology|N-202

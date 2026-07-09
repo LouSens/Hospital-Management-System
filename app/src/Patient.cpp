@@ -41,8 +41,8 @@ const std::vector<AppointmentRecord>& Patient::getAppointments() const {
     return appointments;
 }
 
-void Patient::scheduleAppointment(const MedicalService& service) {
-    AppointmentRecord record(service); // Default status: "Scheduled"
+void Patient::scheduleAppointment(const MedicalService& service, const std::string& doctorId, const std::string& doctorName) {
+    AppointmentRecord record(service, doctorId, doctorName); // Default status: "Scheduled"
     appointments.push_back(record);
     std::cout << "[OK] Appointment scheduled: "
               << service.getServiceCode() << " -- "

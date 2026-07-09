@@ -65,53 +65,79 @@ We will add two distinct medical services.
 1. Type `3` and press Enter.
    - `Enter Service Code  (e.g. SVC001) :` `SVC001`
    - `Enter Service Name               :` `Blood Test`
+   - `Req. Specialization (e.g. General):` `Cardiology`
    - `Enter Base Fee in RM (leave blank for RM 50.00 default):` `150.00`
 2. Type `3` again.
    - `Enter Service Code  (e.g. SVC001) :` `SVC002`
    - `Enter Service Name               :` `MRI Scan`
+   - `Req. Specialization (e.g. General):` `Neurology`
    - `Enter Base Fee in RM (leave blank for RM 50.00 default):` `800.00`
 
 #### **Step D: Schedule Appointments (Option 4)**
 We will assign multiple services to different patients.
 1. Type `4` and press Enter.
+   - `--- Select Patient ---`
    - *(System lists Available Patients)*
    - `Enter Patient ID     :` `P001`
+   - `--- Select Medical Service ---`
    - *(System lists Medical Services Catalog)*
    - `Enter Service Code   :` `SVC001`
+   - `--- Select Doctor for Cardiology ---`
+   - *(System lists Available Doctors for Cardiology)*
+   - `Enter Doctor ID      :` `D001`
 2. Type `4` again.
+   - `--- Select Patient ---`
    - *(System lists Available Patients)*
    - `Enter Patient ID     :` `P002`
+   - `--- Select Medical Service ---`
    - *(System lists Medical Services Catalog)*
    - `Enter Service Code   :` `SVC002`
+   - `--- Select Doctor for Neurology ---`
+   - *(System lists Available Doctors for Neurology)*
+   - `Enter Doctor ID      :` `D002`
 3. Type `4` again.
+   - `--- Select Patient ---`
    - *(System lists Available Patients)*
    - `Enter Patient ID     :` `P001`
+   - `--- Select Medical Service ---`
    - *(System lists Medical Services Catalog)*
    - `Enter Service Code   :` `SVC002` (Alice takes two services)
+   - `--- Select Doctor for Neurology ---`
+   - *(System lists Available Doctors for Neurology)*
+   - `Enter Doctor ID      :` `D002`
 
 #### **Step E: Update Appointment Status & Billing (Option 5)**
 We will test standard, emergency, and cancelled billing modifiers.
 1. Type `5` and press Enter.
+   - `--- Select Patient ---`
    - *(System lists Available Patients)*
    - `Enter Patient ID    :` `P001`
+   - `--- Select Medical Service to Update ---`
    - *(System lists Medical Services Catalog)*
    - `Enter Service Code  :` `SVC001`
-   - `New Status          :` `Completed`
-   - `Billing Modifier    :` `Insured`
+   - `--- Enter New Status and Billing Details ---`
+   - `Status [Scheduled/Completed/Cancelled/Emergency] :` `Completed`
+   - `Billing [Standard/Insured/Emergency]             :` `Insured`
 2. Type `5` again.
+   - `--- Select Patient ---`
    - *(System lists Available Patients)*
    - `Enter Patient ID    :` `P002`
+   - `--- Select Medical Service to Update ---`
    - *(System lists Medical Services Catalog)*
    - `Enter Service Code  :` `SVC002`
-   - `New Status          :` `Emergency`
-   - `Billing Modifier    :` `Emergency` (Tests the 1.5x fee multiplier)
+   - `--- Enter New Status and Billing Details ---`
+   - `Status [Scheduled/Completed/Cancelled/Emergency] :` `Emergency`
+   - `Billing [Standard/Insured/Emergency]             :` `Emergency` (Tests the 1.5x fee multiplier)
 3. Type `5` again.
+   - `--- Select Patient ---`
    - *(System lists Available Patients)*
    - `Enter Patient ID    :` `P001`
+   - `--- Select Medical Service to Update ---`
    - *(System lists Medical Services Catalog)*
    - `Enter Service Code  :` `SVC002`
-   - `New Status          :` `Cancelled`
-   - `Billing Modifier    :` `Standard`
+   - `--- Enter New Status and Billing Details ---`
+   - `Status [Scheduled/Completed/Cancelled/Emergency] :` `Cancelled`
+   - `Billing [Standard/Insured/Emergency]             :` `Standard`
 
 #### **Step F: View Output Information (Options 6, 7, 8, 9)**
 These options prove the system dynamically processes data:

@@ -57,12 +57,13 @@ std::vector<MedicalService> FileManager::loadServices(const std::string& filenam
         // Skip empty lines and comment lines (lines beginning with '#')
         if (line.empty() || line[0] == '#') continue;
         std::stringstream ss(line);
-        std::string code, name, feeStr;
+        std::string code, name, spec, feeStr;
         if (std::getline(ss, code, '|') &&
             std::getline(ss, name, '|') &&
+            std::getline(ss, spec, '|') &&
             std::getline(ss, feeStr)) {
             try {
-                services.emplace_back(code, name, std::stod(feeStr));
+                services.emplace_back(code, name, spec, std::stod(feeStr));
             } catch (...) {
                 // Skip malformed lines
             }
@@ -112,18 +113,21 @@ void FileManager::loadUsers(std::vector<Person*>& users,
             // Skip empty lines and comment lines
             if (line.empty() || line[0] == '#') continue;
             std::stringstream ss(line);
-            std::string patientId, svcCode, svcName, svcFeeStr, status, modifier;
+            std::string patientId, svcCode, svcName, svcSpec, svcFeeStr, status, modifier, doctorId, doctorName;
             if (std::getline(ss, patientId, '|') &&
                 std::getline(ss, svcCode, '|') &&
                 std::getline(ss, svcName, '|') &&
+                std::getline(ss, svcSpec, '|') &&
                 std::getline(ss, svcFeeStr, '|') &&
                 std::getline(ss, status, '|') &&
-                std::getline(ss, modifier)) {
+                std::getline(ss, modifier, '|') &&
+                std::getline(ss, doctorId, '|') &&
+                std::getline(ss, doctorName)) {
                 
                 try {
                     double fee = std::stod(svcFeeStr);
-                    MedicalService svc(svcCode, svcName, fee);
-                    AppointmentRecord record(svc, status, modifier);
+                    MedicalService svc(svcCode, svcName, svcSpec, fee);
+                    AppointmentRecord record(svc, doctorId, doctorName, status, modifier);
                     
                     for (Person* p : users) {
                         if (p->getId() == patientId && p->getRoleType() == "Patient") {

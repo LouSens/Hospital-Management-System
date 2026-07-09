@@ -21,6 +21,9 @@ private:
     // Helper: find patient by ID
     Patient* findPatient(const std::string& id);
 
+    // Helper: find doctor by ID
+    Doctor* findDoctor(const std::string& id) const;
+
     // Helper: find service by code
     const MedicalService* findService(const std::string& code) const;
 
@@ -41,6 +44,7 @@ public:
     void addMedicalService(const MedicalService& service);
 
     void scheduleAppointment(const std::string& patientId,
+                             const std::string& doctorId,
                              const std::string& serviceCode);
 
     void setAppointmentStatus(const std::string& patientId,
@@ -50,6 +54,8 @@ public:
 
     // Display operations
     void listPatients() const;
+    void listDoctors() const;
+    void listDoctorsForSpecialization(const std::string& spec) const;
     void viewAllUsers() const;
     void viewServicesCatalog() const;
     void viewPatientExpenses(const std::string& patientId) const;

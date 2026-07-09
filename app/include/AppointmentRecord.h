@@ -16,18 +16,24 @@
 class AppointmentRecord {
 private:
     MedicalService service;        // COMPOSITION: has-a relationship
+    std::string assignedDoctorId;
+    std::string assignedDoctorName;
     std::string appointmentStatus; // "Scheduled", "Completed", "Cancelled", "Emergency"
     std::string billingModifier;   // "Standard", "Insured", "Emergency"
 
 public:
     // Constructor: creates an appointment with default status "Scheduled"
     AppointmentRecord(const MedicalService& svc,
+                      const std::string& doctorId = "None",
+                      const std::string& doctorName = "None",
                       const std::string& status = "Scheduled",
                       const std::string& modifier = "Standard");
 
     // Getters
     std::string getServiceCode() const;
     std::string getServiceName() const;
+    std::string getDoctorId() const;
+    std::string getDoctorName() const;
     std::string getAppointmentStatus() const;
     std::string getBillingModifier() const;
     MedicalService getService() const;
