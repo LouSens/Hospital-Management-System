@@ -1,3 +1,5 @@
+<div align="center">
+
 # Hospital Patient & Appointment Management System
 
 [![C++](https://img.shields.io/badge/C++-17-00599C?style=flat&logo=cplusplus&logoColor=white)](https://isocpp.org/)
@@ -6,6 +8,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat)](https://opensource.org/licenses/MIT)
 
 A console-based hospital administration system built in **C++17**, demonstrating enterprise-grade Object-Oriented Programming: abstract class hierarchies, runtime polymorphism via virtual dispatch, STL data structures, and persistent file-backed storage.
+
+</div>
 
 ---
 
