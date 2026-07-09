@@ -49,6 +49,7 @@ public:
                               const std::string& modifier);
 
     // Display operations
+    void listPatients() const;
     void viewAllUsers() const;
     void viewServicesCatalog() const;
     void viewPatientExpenses(const std::string& patientId) const;

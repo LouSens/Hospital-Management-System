@@ -91,6 +91,19 @@ void HospitalSystem::setAppointmentStatus(const std::string& patientId,
               << serviceCode << " -> " << status << " (" << modifier << ")" << std::endl;
 }
 
+void HospitalSystem::listPatients() const {
+    std::cout << "  --- Available Patients ---" << std::endl;
+    bool found = false;
+    for (const Person* p : users) {
+        if (p->getRoleType() == "Patient") {
+            std::cout << "  - ID: " << p->getId() << " | Name: " << p->getName() << std::endl;
+            found = true;
+        }
+    }
+    if (!found) std::cout << "  (No patients available)" << std::endl;
+    std::cout << "  --------------------------" << std::endl;
+}
+
 void HospitalSystem::viewAllUsers() const {
     if (users.empty()) {
         std::cout << "  [INFO] No users registered." << std::endl;

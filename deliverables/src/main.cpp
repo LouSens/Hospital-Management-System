@@ -99,7 +99,9 @@ void handleAddService(HospitalSystem& sys) {
 void handleScheduleAppointment(HospitalSystem& sys) {
     std::string patientId, serviceCode;
     std::cout << "\n--- Schedule Appointment ---" << std::endl;
+    sys.listPatients();
     std::cout << "  Enter Patient ID     : "; std::getline(std::cin, patientId);
+    sys.viewServicesCatalog();
     std::cout << "  Enter Service Code   : "; std::getline(std::cin, serviceCode);
     sys.scheduleAppointment(patientId, serviceCode);
 }
@@ -107,7 +109,9 @@ void handleScheduleAppointment(HospitalSystem& sys) {
 void handleSetAppointmentStatus(HospitalSystem& sys) {
     std::string patientId, serviceCode, status, modifier;
     std::cout << "\n--- Update Appointment ---" << std::endl;
+    sys.listPatients();
     std::cout << "  Enter Patient ID    : "; std::getline(std::cin, patientId);
+    sys.viewServicesCatalog();
     std::cout << "  Enter Service Code  : "; std::getline(std::cin, serviceCode);
     std::cout << "  Status [Scheduled/Completed/Cancelled/Emergency] : "; std::getline(std::cin, status);
     std::cout << "  Billing [Standard/Insured/Emergency]             : "; std::getline(std::cin, modifier);
@@ -118,6 +122,7 @@ void handleSetAppointmentStatus(HospitalSystem& sys) {
 void handleViewPatientExpenses(HospitalSystem& sys) {
     std::string id;
     std::cout << "\n--- View Patient Medical Expenses ---" << std::endl;
+    sys.listPatients();
     std::cout << "  Enter Patient ID : "; std::getline(std::cin, id);
     sys.viewPatientExpenses(id);
 }
