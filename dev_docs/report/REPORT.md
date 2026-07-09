@@ -4,35 +4,21 @@
 **Academic Session:** 2026/04
 **GitHub Repository:** [https://github.com/LouSens/Hospital-Management-System](https://github.com/LouSens/Hospital-Management-System)
 
-## Abstract
-This paper presents the design and implementation of the Hospital Patient and Appointment Management System (HPAMS), a console-based software solution developed in C++17. The system addresses the administrative inefficiencies inherent in manual hospital workflows by providing a digitized framework for managing patient records, doctor assignments, medical services, and appointment billing. Through the rigorous application of Object-Oriented Programming (OOP) paradigms—specifically encapsulation, inheritance, and polymorphism—the architecture ensures robust data integrity and system extensibility. Furthermore, the integration of the Standard Template Library (STL) facilitates dynamic memory management and efficient data retrieval.
+## 1. Code Documentations
+The system is divided into well-encapsulated header and source files:
+- **`Person.h` / `Person.cpp`**: Abstract base class defining common attributes (ID, name) and pure virtual functions.
+- **`Patient.h` / `Patient.cpp`**: Derived from `Person`, manages patient-specific data such as insurance and appointment history.
+- **`Doctor.h` / `Doctor.cpp`**: Derived from `Person`, manages doctor-specific data such as specialization and clinic code.
+- **`MedicalService.h` / `MedicalService.cpp`**: Represents available medical procedures, encapsulating base fees and required specializations.
+- **`AppointmentRecord.h` / `AppointmentRecord.cpp`**: A composition object representing a booked appointment, managing dynamic billing modifiers and statuses.
+- **`HospitalSystem.h` / `HospitalSystem.cpp`**: The central controller managing the unified collection of users (via `std::vector<Person*>`) and coordinating system operations.
+- **`FileManager.h` / `FileManager.cpp`**: A static utility class responsible for serializing and deserializing system data to disk.
+- **`main.cpp`**: The presentation layer containing the interactive terminal UI and exception handling blocks.
 
-## 1. Introduction
-Modern healthcare facilities require streamlined administrative processes to ensure optimal patient care and resource allocation. Traditional hospital management workflows are frequently manual, disjointed, and susceptible to human error. Staff members face significant challenges in registering patients, tracking insurance details, managing medical personnel assignments, and calculating accurate billing information that accounts for varying medical fees and conditional modifiers.
-
-The Hospital Patient and Appointment Management System (HPAMS) was developed to mitigate these challenges. By utilizing C++ and adhering to strict Object-Oriented Programming principles, the system models real-world hospital entities within a highly cohesive digital architecture, automating the tracking of medical expenses and facilitating dynamic administrative operations.
-
-## 2. System Architecture and OOP Design Rationale
-The architecture of HPAMS is fundamentally grounded in core OOP methodologies, ensuring that the system is both modular and scalable. 
-
-### 2.1 Encapsulation
-To maintain data integrity, encapsulation is strictly enforced across all system classes. Internal data members, such as a patient's identification number or a medical service's base fee, are designated with `private` or `protected` access modifiers. External interaction with these attributes is exclusively mediated through public accessor and mutator methods (getters and setters), thereby preventing unauthorized data manipulation and localized logic errors.
-
-### 2.2 Inheritance and Polymorphism
-The system establishes a robust hierarchical structure utilizing an "is-a" relationship, with the abstract `Person` class serving as the base entity. The `Patient` and `Doctor` classes inherit from `Person`, which promotes significant code reuse for shared attributes (such as identification and name) while allowing for the implementation of specialized domain attributes.
-
-Polymorphism is integrated at both compile-time and runtime. Compile-time polymorphism is demonstrated through constructor overloading within the `MedicalService` class, which permits the instantiation of service objects with or without explicit fee declarations. Runtime polymorphism is facilitated through the `displayRole()` pure virtual function declared in the `Person` class. During execution, the central `HospitalSystem` controller iterates through a unified standard vector of `Person` pointers. Through dynamic dispatch, the compiler resolves the virtual table (`vtable`) pointer for each instantiated object, automatically executing the correct, derived `displayRole()` method corresponding to the specific object type (Patient or Doctor).
-
-### 2.3 Integration of the Standard Template Library (STL)
-The Standard Template Library is utilized extensively to manage dynamic collections and text-based data streams. Given the dynamic nature of hospital environments, the exact volume of entities cannot be predetermined at compile-time. Consequently, `std::vector` is employed globally to manage collections of pointers and objects. This container provides automatic memory reallocation and contiguous memory storage, resulting in highly efficient sequential iterations. Furthermore, `std::string` is universally adopted for text manipulation, mitigating the inherent buffer overflow risks associated with legacy C-style character arrays.
-
-### 2.4 Static Member Utilization
-Static member variables are implemented to manage state data that pertains to the class collectively rather than to individual object instances. Variables such as `totalCount` in the `Person` class maintain real-time system statistics. These counters are automatically incremented within class constructors and decremented within virtual destructors. This architectural decision permits O(1) time complexity retrieval for system-wide statistical reporting, eliminating the computational overhead of iterative counting.
-
-## 3. System Walkthrough and Demonstration
+## 2. System Output (Demonstration)
 To validate the system's functional requirements, a comprehensive demonstration was conducted. The following subsections detail the anticipated console outputs corresponding to each distinct operational phase.
 
-### 3.1 Main Menu Preview
+### 2.1 Main Menu Preview
 Upon initialization, the system presents the primary navigation menu.
 
 ```text
@@ -56,7 +42,7 @@ Upon initialization, the system presents the primary navigation menu.
 -------------------------------------------------------
 ```
 
-### 3.2 Add New Patient (Choice 1)
+### 2.2 Add New Patient (Choice 1)
 Registering new patients utilizing the fundamental class constructors.
 
 ```text
@@ -77,7 +63,7 @@ Registering new patients utilizing the fundamental class constructors.
 [SUCCESS] Patient P002 added.
 ```
 
-### 3.3 Add New Doctor (Choice 2)
+### 2.3 Add New Doctor (Choice 2)
 Adding new doctors to the system.
 
 ```text
@@ -100,7 +86,7 @@ Adding new doctors to the system.
 [SUCCESS] Doctor D002 added.
 ```
 
-### 3.4 Add New Medical Service (Choice 3)
+### 2.4 Add New Medical Service (Choice 3)
 Adding specialized services to the catalog.
 
 ```text
@@ -123,7 +109,7 @@ Adding specialized services to the catalog.
 [SUCCESS] Service SVC002 added.
 ```
 
-### 3.5 Schedule Appointment (Choice 4)
+### 2.5 Schedule Appointment (Choice 4)
 Scheduling appointments for the patients.
 
 ```text
@@ -209,7 +195,7 @@ Scheduling appointments for the patients.
 [SUCCESS] Appointment scheduled for P002.
 ```
 
-### 3.6 Update Appointment Status (Choice 5)
+### 2.6 Update Appointment Status (Choice 5)
 Modifying the billing state for the scheduled appointments.
 
 ```text
@@ -289,7 +275,7 @@ Modifying the billing state for the scheduled appointments.
 [SUCCESS] Appointment updated.
 ```
 
-### 3.7 View All Users (Choice 6)
+### 2.7 View All Users (Choice 6)
 Retrieving user records demonstrates runtime polymorphism, successfully parsing the unified vector.
 
 ```text
@@ -302,7 +288,7 @@ Retrieving user records demonstrates runtime polymorphism, successfully parsing 
 [Doctor] ID: D002 | Name: Dr. Adams | Specialisation: Neurology | Clinic: C-102
 ```
 
-### 3.8 View Medical Services Catalog (Choice 7)
+### 2.8 View Medical Services Catalog (Choice 7)
 Displaying all available medical services.
 
 ```text
@@ -316,7 +302,7 @@ Displaying all available medical services.
 =========================================================================================================
 ```
 
-### 3.9 View Patient Medical Expenses (Choice 8)
+### 2.9 View Patient Medical Expenses (Choice 8)
 Checking the medical expenses for two patients.
 
 ```text
@@ -341,7 +327,7 @@ Checking the medical expenses for two patients.
 [Billing] Total Expenses for P002 (Jane Smith): RM 0.00
 ```
 
-### 3.10 View System Statistics (Choice 9)
+### 2.10 View System Statistics (Choice 9)
 System statistics leverage the static counters to report instantaneous metrics.
 
 ```text
@@ -353,7 +339,7 @@ Total Patients        : 2
 Total Doctors         : 2
 ```
 
-### 3.11 Save Data and Exit System
+### 2.11 Save Data and Exit System
 Saving the data to files and terminating the system gracefully.
 
 ```text
@@ -367,13 +353,34 @@ Saving the data to files and terminating the system gracefully.
   Memory cleaned up by HospitalSystem destructor.
 ```
 
-## 4. Conclusion
-The Hospital Patient and Appointment Management System successfully satisfies its fundamental design objectives by providing a highly organized, cohesive, and digitally automated framework for hospital administration. The rigorous implementation of Object-Oriented Programming principles ensures that the codebase remains robust, memory-safe, and easily extensible for future iterations.
+## 3. Rationale and System Design
 
-## References
-1. Stroustrup, B. (2013). *The C++ Programming Language* (4th ed.). Addison-Wesley.
-2. cplusplus.com. (n.d.). *C++ Reference: Standard Template Library (STL)*. Retrieved from https://cplusplus.com/reference/stl/
-3. Microsoft. (n.d.). *C++ Exception Handling*. Microsoft Learn. Retrieved from https://learn.microsoft.com/en-us/cpp/cpp/exception-handling-in-visual-cpp
+### 3.1 STL Explanation
+HPAMS relies on four STL facilities, each selected because it structurally matches a specific requirement of the hospital domain rather than out of convenience.
+- `std::vector<Person*>` (in HospitalSystem). The number of patients and doctors a hospital must track is unknown at compile time and grows continuously as new users are registered. `std::vector` provides amortised constant-time `push_back` and contiguous, cache-friendly storage, which makes the full-scan iteration performed by `viewAllUsers()` and the destructor's cleanup loop efficient. Critically, storing `Person*` rather than `Person` objects by value is what allows the container to hold `Patient` and `Doctor` objects side by side — a `std::vector<Person>` would slice every derived object down to its base portion and destroy the very polymorphism the project requires.
+- `std::vector<AppointmentRecord>` (in Patient). A patient may accumulate an arbitrary number of appointments over time, so a growable sequence container is again the natural fit. Unlike the users container, this vector stores `AppointmentRecord` objects by value: each record is a small, self-contained, freely copyable composition object, so value semantics let `Patient`'s compiler-generated copy/move/destroy operations manage the collection automatically, with no manual memory management required.
+- `std::string` (throughout). Every textual attribute — identifiers, names, statuses, and billing modifiers — is stored as `std::string` rather than a fixed-size C-style character array. This removes the fixed-buffer overflow risk inherent to char arrays, supports safe concatenation (used extensively in the `toFileString()` family of serialisation methods), and manages its own heap memory automatically.
+- `std::stringstream` and `std::find_if` (in FileManager and Patient). Persisted records are stored as pipe-delimited text lines; `std::stringstream` combined with `std::getline(ss, field, '|')` turns line-parsing into a short, readable sequence of calls rather than manual character-by-character scanning. Similarly, `Patient::setAppointmentStatus()` uses `std::find_if` from `<algorithm>` with a lambda predicate to declaratively express “locate the appointment whose service code matches”, which is both shorter and less error-prone than a hand-written indexed loop.
+
+In summary, each STL choice was made because the exact number of elements is unknown at compile time, contiguous iteration is required to support the project's polymorphic display and reporting functions, and the standard library's extensively tested implementations reduce the risk of the memory-safety errors that a hand-rolled dynamic array or linked list would introduce.
+
+### 3.2 Rationale for Inheritance and Polymorphism
+**Why Patient and Doctor inherit from Person.** Both a patient and a doctor share an identical, non-negotiable institutional identity: each must possess a unique id and a display name, and each must be presentable through the same reporting interface used elsewhere in the system. Declaring these two attributes once in `Person` and having `Patient` and `Doctor` inherit them avoids duplicating both the fields and their accessor implementations (the DRY — Don't Repeat Yourself — principle), and it establishes a genuine “is-a” relationship: a `Patient` is-a `Person` who happens to also carry insurance and appointment data, and a `Doctor` is-a `Person` who happens to also carry a specialisation and clinic assignment. `Person` itself is declared abstract, via three pure virtual functions (`displayRole()`, `getRoleType()`, `toFileString()`), specifically because the hospital never manages a generic, role-less person in practice — every user is concretely either a patient or a member of staff — so instantiating a bare `Person` object would represent an invalid system state. The pure virtual functions therefore serve simultaneously as a compiler-enforced contract and as a safeguard against accidental misuse.
+
+**How runtime polymorphism was achieved.** Because `displayRole()`, `getRoleType()`, and `toFileString()` are declared virtual in `Person`, every `Patient` or `Doctor` object carries a hidden virtual-table pointer (vptr) installed by the compiler at construction. When code elsewhere in the program holds only a `Person*` (as `HospitalSystem`'s users vector does) and calls `p->displayRole()`, the call is resolved not at compile time but at runtime: the vptr is followed to the object's actual vtable, and the entry for the object's true, dynamic type is invoked. This is what allows `HospitalSystem::viewAllUsers()` to contain a single, type-agnostic loop that nonetheless produces correct, role-specific output for every object it iterates over. The design also depends on `Person` declaring a virtual destructor; without it, deleting a `Doctor` or `Patient` object through a `Person*` pointer (as `~HospitalSystem()` does) would invoke only `~Person()`, leaving the derived object's resources improperly released — an example of undefined behaviour that virtual destructors exist specifically to prevent (Stroustrup, 2013).
+
+Compile-time polymorphism was implemented alongside runtime polymorphism through constructor overloading in `MedicalService`, where the compiler distinguishes `MedicalService(code, name, fee, reqSpec)` from `MedicalService(code, name, reqSpec)` purely by the number of arguments supplied at the call site, with no vtable or dynamic dispatch involved. Recognising this distinction was important to the project's design: overload resolution and virtual dispatch solve different problems and were applied to different classes precisely because `MedicalService` objects never need to be swapped for one another polymorphically, while `Person`, `Patient`, and `Doctor` objects specifically do.
+
+Finally, the relationship between `AppointmentRecord` and `MedicalService` was deliberately modelled as composition (“has-a”) rather than inheritance (“is-a”). An appointment is not a specialised kind of medical service; it references and owns one alongside orthogonal billing metadata (status and modifier) that a `MedicalService` itself has no concept of. Modelling this relationship through inheritance would have been structurally incorrect and would have violated the Liskov Substitution Principle, since an `AppointmentRecord` cannot meaningfully be substituted wherever a `MedicalService` is expected.
+
+### 3.3 Rationale for Static Members and Additional Components
+**Static members.** `Person::totalCount`, `Patient::patientCount`, and `Doctor::doctorCount` are declared static because they describe a property of the class as a whole — “how many users currently exist” — rather than a property of any individual object. Each is incremented inside its class's constructor and decremented inside its destructor, so the counters remain accurate across the object's entire lifetime, including deletions performed through the polymorphic `Person*` pointers in `HospitalSystem`. This design allows the System Dashboard to report live totals in constant time, O(1), without iterating the users vector — an efficiency gain that matters as the number of registrations grows. `FileManager`'s methods are likewise all declared static: the class holds no per-instance state whatsoever, so requiring a caller to instantiate a `FileManager` object purely to invoke a stateless utility function would add ceremony without benefit, and marking every member static communicates this design intent directly in the class's interface.
+
+**Additional and advanced components.** Beyond the minimum requirements of the assignment brief, four further design elements were incorporated to strengthen the system's robustness: 
+1. An auto-load-on-construction and auto-save-on-exit lifecycle, so persistence between sessions is transparent to the end user rather than requiring an explicit save before every exit.
+2. A four-tier exception hierarchy at the presentation layer (`std::invalid_argument`, `std::ios_base::failure`, `std::runtime_error`, and a generic `std::exception` fallback), giving the user a specific, actionable diagnostic rather than a single undifferentiated error message.
+3. The use of `dynamic_cast` for safe downcasting inside `HospitalSystem::findPatient()`, allowing `Patient`-only operations such as scheduling to be reached from the polymorphic users container without weakening the `Person` base interface with patient-specific methods.
+4. A defensive file-parsing routine in `FileManager` that silently skips blank or comment-prefixed (`#`) lines during loading, so that a partially corrupted or manually edited data file degrades gracefully rather than crashing the application on start-up.
 
 
 ## Appendix: Complete Source Code
