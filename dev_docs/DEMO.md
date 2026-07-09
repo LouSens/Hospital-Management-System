@@ -74,29 +74,41 @@ We will add two distinct medical services.
 #### **Step D: Schedule Appointments (Option 4)**
 We will assign multiple services to different patients.
 1. Type `4` and press Enter.
+   - *(System lists Available Patients)*
    - `Enter Patient ID     :` `P001`
+   - *(System lists Medical Services Catalog)*
    - `Enter Service Code   :` `SVC001`
 2. Type `4` again.
+   - *(System lists Available Patients)*
    - `Enter Patient ID     :` `P002`
+   - *(System lists Medical Services Catalog)*
    - `Enter Service Code   :` `SVC002`
 3. Type `4` again.
+   - *(System lists Available Patients)*
    - `Enter Patient ID     :` `P001`
+   - *(System lists Medical Services Catalog)*
    - `Enter Service Code   :` `SVC002` (Alice takes two services)
 
 #### **Step E: Update Appointment Status & Billing (Option 5)**
 We will test standard, emergency, and cancelled billing modifiers.
 1. Type `5` and press Enter.
+   - *(System lists Available Patients)*
    - `Enter Patient ID    :` `P001`
+   - *(System lists Medical Services Catalog)*
    - `Enter Service Code  :` `SVC001`
    - `New Status          :` `Completed`
    - `Billing Modifier    :` `Insured`
 2. Type `5` again.
+   - *(System lists Available Patients)*
    - `Enter Patient ID    :` `P002`
+   - *(System lists Medical Services Catalog)*
    - `Enter Service Code  :` `SVC002`
    - `New Status          :` `Emergency`
    - `Billing Modifier    :` `Emergency` (Tests the 1.5x fee multiplier)
 3. Type `5` again.
+   - *(System lists Available Patients)*
    - `Enter Patient ID    :` `P001`
+   - *(System lists Medical Services Catalog)*
    - `Enter Service Code  :` `SVC002`
    - `New Status          :` `Cancelled`
    - `Billing Modifier    :` `Standard`
@@ -106,9 +118,11 @@ These options prove the system dynamically processes data:
 - Type `6` to **View All Personnel and Patients** (Will cleanly list Alice, Bob, Dr. Smith, and Dr. Adams using Polymorphism).
 - Type `7` to **View Medical Services Catalog** (Will list Blood Test and MRI Scan).
 - Type `8` to **View Patient Medical Expenses** for Alice.
-  - `Enter Patient ID :` `P001` (Calculates bill for Completed Blood Test + Cancelled MRI).
+   - *(System lists Available Patients)*
+   - `Enter Patient ID :` `P001` (Calculates bill for Completed Blood Test + Cancelled MRI).
 - Type `8` again for Bob.
-  - `Enter Patient ID :` `P002` (Calculates bill for the Emergency MRI with a 1.5x multiplier).
+   - *(System lists Available Patients)*
+   - `Enter Patient ID :` `P002` (Calculates bill for the Emergency MRI with a 1.5x multiplier).
 - Type `9` to **View System Dashboard** (Proves the static counters accurately read 2 Patients, 2 Doctors, 4 Users).
 
 #### **Step G: Verify Persistence (Options S and 0)**

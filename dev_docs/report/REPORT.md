@@ -91,14 +91,32 @@ Appointments are instantiated via object composition, linking a patient to a med
   Enter choice: 4
 
 --- Schedule Appointment ---
+  --- Available Patients ---
+  - ID: P001 | Name: John Doe
+  --------------------------
   Enter Patient ID     : P001
+
+=======================================================
+           MEDICAL SERVICES CATALOG
+=======================================================
+  Code: SVC001      | Name: Blood Test               | Base Fee: RM 150.00
+=======================================================
   Enter Service Code   : SVC001
 [SUCCESS] Appointment scheduled for P001.
 
   Enter choice: 5
 
 --- Update Appointment ---
+  --- Available Patients ---
+  - ID: P001 | Name: John Doe
+  --------------------------
   Enter Patient ID    : P001
+
+=======================================================
+           MEDICAL SERVICES CATALOG
+=======================================================
+  Code: SVC001      | Name: Blood Test               | Base Fee: RM 150.00
+=======================================================
   Enter Service Code  : SVC001
   Status [Scheduled/Completed/Cancelled/Emergency] : Completed
   Billing [Standard/Insured/Emergency]             : Insured
@@ -123,6 +141,9 @@ Retrieving user records demonstrates runtime polymorphism, successfully parsing 
   Enter choice: 8
 
 --- Patient Medical Expenses ---
+  --- Available Patients ---
+  - ID: P001 | Name: John Doe
+  --------------------------
   Enter Patient ID : P001
 [Billing] Total Expenses for P001 (John Doe): RM 120.00
 
